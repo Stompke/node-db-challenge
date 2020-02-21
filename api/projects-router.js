@@ -79,7 +79,10 @@ router.get('/:id', (req, res) => {
         .then(project => {
             Projects.tasksForProject(req.params.id)
             .then(tasks => {
-                res.status(200).json([...project,{...tasks}]);
+                Projects.resourcesForProject(req.params.id)
+                .then(resources => {
+                    res.status(200).json({...project, tasks: tasks, resources: resources});
+                })
             })
             .catch(err => {
                 res.status(500).json({ error: "BIG ERROR"});
@@ -87,6 +90,16 @@ router.get('/:id', (req, res) => {
         })
         .catch(err => {
             res.status(500).json({ error: "Could not get that project" });
+        })
+})
+
+router.get('/:id/resources', (req, res) => {
+    Projects.resourcesForProject(req.params.id)
+        .then(resources => {
+            res.status(200).json(resources);
+        })
+        .catch(err => {
+            res.status(500).json({ error: "Could not get resources for that project" });
         })
 })
 
