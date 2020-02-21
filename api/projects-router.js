@@ -74,6 +74,22 @@ router.get('/:id/tasks', (req, res) => {
         })
 })
 
+router.get('/:id', (req, res) => {
+    Projects.projectLayout(req.params.id)
+        .then(project => {
+            Projects.tasksForProject(req.params.id)
+            .then(tasks => {
+                res.status(200).json([...project,{...tasks}]);
+            })
+            .catch(err => {
+                res.status(500).json({ error: "BIG ERROR"});
+            })
+        })
+        .catch(err => {
+            res.status(500).json({ error: "Could not get that project" });
+        })
+})
+
 
 
 module.exports = router;

@@ -7,7 +7,8 @@ module.exports = {
     addResource,
     tasks,
     addTask,
-    tasksForProject
+    tasksForProject,
+    projectLayout
 }
 
 function get() {
@@ -43,4 +44,11 @@ function tasksForProject(id) {
         .select('p.name as ProjectName','p.description as ProjectDescription','t.description as TaskDescription', 't.notes as TaskNotes', 't.completed as TaskCompleted')
         .join('projects as p','t.project_id','p.id')
         .where({ project_id: id })
+}
+
+function projectLayout(id) {
+    return db('projects as p')
+        .select('p.id as ProjectId','p.name as ProjectName', 'p.description as ProjectDescription')
+        .where({  id })
+        // .join('tasks as t','t.project_id','p.id')
 }
