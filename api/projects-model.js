@@ -17,7 +17,6 @@ function get() {
 }
 
 function addProject(project) {
-    console.log(project)
     return db('projects')
         .insert(project)
 }
@@ -28,7 +27,8 @@ function resources() {
 
 function addResource(resource) {
     return db('resources')
-        .insert(resource);
+        .insert(resource)
+        .then(ids => ({id: ids[0]}))
 }
 
 function tasks() {
